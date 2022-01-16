@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import cw from '../assents/cw.jpeg';
+import ekLogo from '../assents/ekLogo.jpg';
 import { useNavigate } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
 import { AuthContext } from '../contexts/AuthContext';
@@ -16,17 +16,25 @@ import { auth } from '../helpers/firebase';
 import { signOut } from 'firebase/auth';
 import { successNote } from '../helpers/ToastNotify';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   container: {
     backgroundColor: '#046582',
     position: 'static',
+  },
+  title: {
+    fontFamily: 'Girassol',
+    textAlign: 'center',
+    cursor: 'pointer',
+  },
+  logo: {
+    width: '40px',
+    cursor: 'pointer',
+    borderRadius: '50%',
   },
 }));
 
 export default function Navbar() {
   const { currentUser } = useContext(AuthContext);
-  // console.log(currentUser);
-
   const classes = useStyles();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -48,19 +56,23 @@ export default function Navbar() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="fixed">
         <Toolbar className={classes.container}>
-          <img
-            onClick={() => navigate('./')}
-            style={{ width: '40px', cursor: 'pointer' }}
-            src={cw}
-            alt=""
-          />
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <div
+          <a
+            href="https://github.com/emrekesimemre"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
               onClick={() => navigate('./')}
-              style={{ textAlign: 'center', cursor: 'pointer' }}
-            >
+              className={classes.logo}
+              src={ekLogo}
+              alt="logo"
+            />
+          </a>
+
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            <div className={classes.title} onClick={() => navigate('./')}>
               {' '}
-              ──── <span>{'<Fire/>'}</span> Blog ────
+              ──── <span>{'<EKesim/>'}</span> Blog ────
             </div>
           </Typography>
 
@@ -72,9 +84,9 @@ export default function Navbar() {
             onClick={handleMenu}
             color="inherit"
           >
-            <AccountCircle />
+            <AccountCircle style={{ fontSize: '40px' }} />
           </IconButton>
-          {currentUser ? (
+          {currentUser?.email ? (
             <Menu
               id="menu-appbar"
               anchorEl={anchorEl}

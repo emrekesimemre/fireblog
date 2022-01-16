@@ -8,7 +8,11 @@ import login from '../assents/login.png';
 import { makeStyles } from '@material-ui/styles';
 import google from '../assents/google.png';
 import { useState } from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import {
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from 'firebase/auth';
 import { auth } from '../helpers/firebase';
 import { useNavigate } from 'react-router-dom';
 import { successNote, errorNote } from '../helpers/ToastNotify';
@@ -61,9 +65,26 @@ export default function Login() {
       navigate('/');
       successNote('logged in successfully');
     } catch (err) {
-     errorNote("the password is invalid or the user does not have a password!")
+      errorNote(
+        'the password is invalid or the user does not have a password!'
+      );
     }
   };
+
+  const signInWithGoogle = async (e) => {
+    e.preventDefault();
+    try {
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(auth, provider);
+      navigate('/');
+      successNote('logged in successfully');
+    } catch (error) {
+      errorNote(
+        'the password is invalid or the user does not have a password!'
+      );
+    }
+  };
+
   const classes = useStyles();
 
   return (
@@ -123,6 +144,7 @@ export default function Login() {
               LOGIN
             </Button>
             <Button
+              onClick={signInWithGoogle}
               className={classes.googlebtn}
               type="submit"
               fullWidth
